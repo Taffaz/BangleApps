@@ -19,6 +19,7 @@ var brickColCount = 6;
 var bricks = [];
 var dx = 3;
 var dy = -3;
+var gameOver = 0;
 
 //instantiate bricks[]
 for(var c = 0; c < brickColCount; c++){
@@ -103,24 +104,39 @@ function collisionDetection(){
 
 function draw(){
   g.clear();
-  drawBall();
-  drawPaddle();
-  drawBricks();
-  collisionDetection();
   
-  if(ballX + dx > SCREEN_WIDTH - BALL_RADIUS || ballX + dx < BALL_RADIUS) {
-    dx = -dx;
+  if(gameOver){
+    g.drawString("GAME OVER:\nPress Top Button to restart", 5, 50, true);
+  }else{
+    drawBall();
+    drawPaddle();
+    drawBricks();
+    collisionDetection();
+
+    if(ballX + dx > SCREEN_WIDTH - BALL_RADIUS || ballX + dx < BALL_RADIUS) {
+      dx = -dx;
+    }
+    if(ballY + dy < BALL_RADIUS){
+      dy = -dy;
+    } else if (ballY + dy > SCREEN_HEIGHT - BALL_RADIUS) {
+        gameOver = 1;
+    }
+    ballX += dx;
+    ballY += dy;
   }
-  if(ballY + dy < BALL_RADIUS){
-    dy = -dy;
-  } else if (ballY + dy > SCREEN_HEIGHT - BALL_RADIUS) {
-      //console.log("GAME OVER!");
-  }
-  ballX += dx;
-  ballY += dy;
   g.flip();
 }
 
+setWatch(function(e) {
+  if(gameOver){
+    paddleX = (SCREEN_WIDTH - PADDLE_WIDTH) / 2;
+    ballX = SCREEN_WIDTH / 2;
+    ballY = SCREEN_HEIGHT - 30;
+    dx = 3;
+    dy = -3;
+    gameOver = 0;
+  }
+}, BTN1, {edge:"rising", debounce:50, repeat:true});
 
 setWatch(function(e) {
   if(paddleX > 0)
