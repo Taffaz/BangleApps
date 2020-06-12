@@ -22,10 +22,12 @@ var dy = -3;
 var gameOver = 0;
 
 //instantiate bricks[]
-for(var c = 0; c < brickColCount; c++){
-  bricks[c] = [];
-  for(var r = 0; r < brickRowCount; r++){
-    bricks[c][r] = { x: 0, y: 0, status: 1 };
+function instantiateBricks(){
+  for(var c = 0; c < brickColCount; c++){
+    bricks[c] = [];
+    for(var r = 0; r < brickRowCount; r++){
+      bricks[c][r] = { x: 0, y: 0, status: 1 };
+    }
   }
 }
 
@@ -127,6 +129,8 @@ function draw(){
   g.flip();
 }
 
+instantiateBricks();
+
 setWatch(function(e) {
   if(gameOver){
     paddleX = (SCREEN_WIDTH - PADDLE_WIDTH) / 2;
@@ -134,6 +138,7 @@ setWatch(function(e) {
     ballY = SCREEN_HEIGHT - 30;
     dx = 3;
     dy = -3;
+    instantiateBricks();
     gameOver = 0;
   }
 }, BTN1, {edge:"rising", debounce:50, repeat:true});
