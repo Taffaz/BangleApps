@@ -104,18 +104,10 @@ function collisionDetection(){
   }
 }
 
-function draw(){
-  g.clear();
+function update(){
+  collisionDetection();
   
-  if(gameOver){
-    g.drawString("GAME OVER:\nPress Top Button to restart", 5, 50, true);
-  }else{
-    drawBall();
-    drawPaddle();
-    drawBricks();
-    collisionDetection();
-
-    if(ballX + dx > SCREEN_WIDTH - BALL_RADIUS || ballX + dx < BALL_RADIUS) {
+  if(ballX + dx > SCREEN_WIDTH - BALL_RADIUS || ballX + dx < BALL_RADIUS) {
       dx = -dx;
     }
     if(ballY + dy < BALL_RADIUS){
@@ -125,6 +117,16 @@ function draw(){
     }
     ballX += dx;
     ballY += dy;
+}
+
+function draw(){
+  g.clear();
+  if(gameOver){
+    g.drawString("GAME OVER:\nPress Top Button to restart", 5, 50, true);
+  }else{
+    drawBall();
+    drawPaddle();
+    drawBricks();
   }
   g.flip();
 }
@@ -163,4 +165,5 @@ setTimeout(()=>{
   g.clear();
   draw();
   setInterval(draw, 100);
+  setInterval(update, 30);
 },10);
